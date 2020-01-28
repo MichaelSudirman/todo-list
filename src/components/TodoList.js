@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import TodoForm from './TodoForm';
-// import TodoFilter from './TodoFilter';
+import TodoFilter from './TodoFilter';
 import Todo from './Todo';
 
 /*
@@ -11,26 +11,27 @@ import Todo from './Todo';
   4. show number of active todos
   5. filter all/active/complete
   6. delete todo
-  7. delete all complete
-    7.1 only show if atleast one is complete
-  8. button to toggle all on/off
+  7. filter todo
+  8. delete all todo
+
 */
 
 const TodoList = () => {
     const [state, setState] = useState({
         todos: [],
         display: "all",
-        // filter: ""
+        filter: ''
     });
     const addTodo = (todo) => {
         setState(state => ({
-            todos: [todo, ...state.todos],
-            display: state.display
+            ...state,
+            todos: [todo, ...state.todos]
         }));
     }
 
     const toggleComplete = id => {
         setState({
+            ...state,
             todos: state.todos.map(todo => {
                 if (todo.id === id) {
                     return {
@@ -41,15 +42,14 @@ const TodoList = () => {
                 else {
                     return todo
                 }
-            }),
-            display: state.display
+            })
         })
     };
-    
+
     const deleteTodo = id => {
         setState({
-            todos: state.todos.filter(todo=>  todo.id !== id),
-            display: state.display
+            ...state,
+            todos: state.todos.filter(todo => todo.id !== id)
         })
     }
 
@@ -60,33 +60,47 @@ const TodoList = () => {
     const changeDisplay = args => {
         if (args === 'all' || args === 'in progress' || args === 'complete') {
             setState({
-                todos: state.todos,
+                ...state,
                 display: args
             })
         }
     }
 
     const displayTodos = () => {
-        if(state.display === 'all'){
-            return state.todos
+        let newTodos;
+        if (state.display === 'all') {
+            newTodos = state.todos
         }
-        else if(state.display === 'in progress'){
-            return state.todos.filter(todo => !todo.complete)   
-        }        
-        else if(state.display === 'complete'){
-            return state.todos.filter(todo => todo.complete)
+        else if (state.display === 'in progress') {
+            newTodos = state.todos.filter(todo => !todo.complete)
         }
+        else if (state.display === 'complete') {
+            newTodos = state.todos.filter(todo => todo.complete)
+        }
+        newTodos = newTodos.filter(todo => todo.text.toLowerCase().indexOf(state.filter) >= 0)
+        return newTodos
     }
 
+    const filterChange = data => {
+        setState({
+            ...state,
+            filter: data
+        })
+    }
 
+    const deleteAllTodo = () => {
+        setState({
+            todos: [],
+            display: 'all',
+            filter: ''
+        })
+    }
 
     return (
         <div>
-            {console.log("render")}
-            {console.log(state)}
             <p>todo list</p>
             <TodoForm onSubmit={addTodo} />
-            {/* <TodoFilter state={state}/> */}
+            <TodoFilter onChange={filterChange} state={state} />
             {displayTodos().map(todo =>
                 <Todo
                     key={todo.id}
@@ -96,11 +110,12 @@ const TodoList = () => {
                 />
             )}
             <div>todos left: {checkTodosLeft(state.todos)}</div>
-            <button onClick={() => changeDisplay('all')}>all</button>
-            <button onClick={() => changeDisplay('in progress')}>in progress</button>
-            <button onClick={() => changeDisplay('complete')}>complete</button>
+            <button onClick={() => changeDisplay('all')}>All</button>
+            <button onClick={() => changeDisplay('in progress')}>In Progress</button>
+            <button onClick={() => changeDisplay('complete')}>Complete</button>
+            <button onClick={deleteAllTodo}>Delete All</button>
         </div>
-    );
-}
-
-export default TodoList;
+        );
+    }
+    
+    export default TodoList;

@@ -1,39 +1,33 @@
-// import React, { useState } from 'react';
+import React, { useState } from 'react';
 
-// const TodoFilter = props => {
-//     const [state, setState] = useState({filterText: ''})
+const TodoFilter = props => {
+    const [state, setState] = useState({ filterText: '' })
 
-//     const filterChange = (event) => {
-//         console.log(props.state)
-//         setState({
-//             [event.target.name]: event.target.value
-//         })
-//         // console.log(event.target.value)
-//         props.setState({
-//             todos:
-//             display:props.state.display
-//         })
-//     }
+    const filterChange = (event) => {
+        setState({
+            [event.target.name]: event.target.value
+        })
+        props.onChange(event.target.value)
+    }
 
+    const resetSubmit = event => {
+        event.preventDefault()
+        setState({ text: '' });
+        props.onChange('')
+    }
 
-//     const filterSubmit = event => {
-//         event.preventDefault()
-        
-//         setState({ text: '' });
-//     } 
-
-//     return (
-//         <form onSubmit={filterSubmit}>
-//             <input
-//                 name='text'
-//                 value={state.text}
-//                 onChange={filterChange}
-//                 placeholder='filter...'
-//             />
-//             <button onClick={filterSubmit}>Reset</button>
-//         </form>
-//     )
-// }
+    return (
+        <form>
+            <input
+                name='text'
+                value={state.text}
+                onChange={filterChange}
+                placeholder='filter...'
+            />
+            <button onClick={resetSubmit}>Reset</button>
+        </form>
+    )
+}
 
 
-// export default TodoFilter;
+export default TodoFilter;
