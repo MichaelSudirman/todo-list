@@ -3,12 +3,12 @@ import shortid from 'shortid';
 
 const TodoForm = props => {
     const [state, setState] = useState({ text: '' });
-    const handleChange = (event) => {
+    const formChange = (event) => {
         setState({
             [event.target.name]: event.target.value
         })
     }
-    const handleSubmit = event => {
+    const formSubmit = event => {
         event.preventDefault();
         const payload = {
             id: shortid.generate(),
@@ -19,14 +19,14 @@ const TodoForm = props => {
         setState({ text: '' });
     }
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={formSubmit}>
             <input
                 name='text'
                 value={state.text}
-                onChange={handleChange}
+                onChange={formChange}
                 placeholder='todo...'
             />
-            <button onClick={handleSubmit}>Add ToDo</button>
+            <button onClick={formSubmit}>Add ToDo</button>
         </form>
     );
 }
