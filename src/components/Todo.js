@@ -22,11 +22,11 @@ const ToDo = props => {
                         {props.todo.text}</div></Card.Title>
                     <Card.Subtitle className="mb-2 text-muted">
                         {props.todo.complete ? "Completed" : "In Progress"}</Card.Subtitle>
-                    <Card.Text>Date: TBA</Card.Text>
-                    <Button style={{ margin: '1rem',width: '5rem' }} variant="outline-success" onClick={props.toggleComplete}>
+                        <Card.Text>{props.todo.date}</Card.Text>
+                    <Button style={{ margin: '1rem',width: '5.5rem' }} variant="outline-success" onClick={props.toggleComplete}>
                         {props.todo.complete ? "Uncheck" : "Check"}
                     </Button>
-                    <Button style={{ margin: '1rem',width: '5rem' }} variant="outline-danger" onClick={handleShow}>
+                    <Button style={{ margin: '1rem',width: '5.5rem' }} variant="outline-danger" onClick={handleShow}>
                         Delete
                     </Button>
                 </Card.Body>
@@ -39,7 +39,7 @@ const ToDo = props => {
                 <Modal.Body>Are you sure to delete the following ToDo item:</Modal.Body>
                 <Modal.Body>{props.todo.text}</Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>Close</Button>
+                    <Button variant="secondary" onClick={handleClose}>Cancel</Button>
                     <Button variant="danger" onClick={props.deleteTodo}>Delete</Button>
                 </Modal.Footer>
             </Modal>

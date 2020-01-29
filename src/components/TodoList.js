@@ -121,7 +121,7 @@ const TodoList = () => {
         <Container class="d-flex flex-row">
             <h1>Todo List</h1>
             {/* Inputs for adding and filtering ToDo lists */}
-            <TodoForm onSubmit={addTodo} />
+            <TodoForm onSubmit={addTodo} date={new Date()}/>
             <TodoFilter onChange={changeFilter} state={state} />
             <h5>todos left: {checkTodosLeft(state.todos)}</h5>
             {/* Button Features */}
@@ -149,7 +149,7 @@ const TodoList = () => {
                 </Modal.Header>
                 <Modal.Body>Are you sure to delete all of your ToDo list?</Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>Close</Button>
+                    <Button variant="secondary" onClick={handleClose}>Cancel</Button>
                     <Button variant="danger" onClick={deleteAllTodo}>Delete</Button>
                 </Modal.Footer>
             </Modal>

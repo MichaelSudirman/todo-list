@@ -13,13 +13,23 @@ const TodoForm = props => {
         })
     }
 
+    // Utility, get current time
+    const datetime ="Time: "
+        + props.date.getHours() + ":"
+        + props.date.getMinutes() + ":"
+        + props.date.getSeconds() + " - Date: " 
+        + props.date.getDate() + "/"
+        + (props.date.getMonth() + 1) + "/"
+        + props.date.getFullYear();
+
     // Return payload when the form is submitted
     const formSubmit = event => {
         event.preventDefault();
         const payload = {
             id: shortid.generate(),
             text: state.text,
-            complete: false
+            complete: false,
+            date:datetime
         }
         props.onSubmit(payload)
         setState({ text: '' });
