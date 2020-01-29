@@ -2,7 +2,9 @@ import React from 'react';
 import './App.css';
 import TodoList from './components/TodoList';
 
-function App() {
+const App = () => {
+  // Similar to componentDidMount and componentDidUpdate:
+  
   return (
     <TodoList />
   );

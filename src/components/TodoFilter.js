@@ -23,7 +23,7 @@ const TodoFilter = props => {
     }
 
     return (
-        <form class="d-flex m-1">
+        <form class="d-flex m-1 align-item-center">
             <input
                 class="form-control"
                 name='text'

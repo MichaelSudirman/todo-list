@@ -36,7 +36,7 @@ const TodoForm = props => {
     }
 
     return (
-        <form class="d-flex m-1" onSubmit={formSubmit}>
+        <form class="d-flex m-1 align-items-center" onSubmit={formSubmit}>
             <input
                 class="form-control"
                 name='text'
@@ -44,7 +44,7 @@ const TodoForm = props => {
                 onChange={formChange}
                 placeholder='todo...'
             />
-            <Button style={{ width: '8rem' }} variant="secondary" onClick={formSubmit}>Add ToDo</Button>
+            <Button style={{ width: '8rem' }} variant="secondary" onClick={formSubmit}>Add</Button>
         </form>
     );
 }

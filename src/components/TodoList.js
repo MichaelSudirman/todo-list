@@ -7,6 +7,9 @@ import Todo from './Todo';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+
 import Modal from 'react-bootstrap/Modal';
 /*
   TodoMVC
@@ -121,15 +124,17 @@ const TodoList = () => {
         <Container class="d-flex flex-row">
             <h1>Todo List</h1>
             {/* Inputs for adding and filtering ToDo lists */}
-            <TodoForm onSubmit={addTodo} date={new Date()}/>
+            <TodoForm onSubmit={addTodo} date={new Date()} />
             <TodoFilter onChange={changeFilter} state={state} />
             <h5>todos left: {checkTodosLeft(state.todos)}</h5>
             {/* Button Features */}
             <div class="d-flex justify-content-center ">
-                <Button style={{ margin: '1rem', width: '8rem' }} variant="outline-dark" onClick={() => changeDisplay('all')}>Show All</Button>
-                <Button style={{ margin: '1rem', width: '8rem' }} variant="outline-info" onClick={() => changeDisplay('in progress')}>In Progress</Button>
-                <Button style={{ margin: '1rem', width: '8rem' }} variant="outline-success" onClick={() => changeDisplay('complete')}>Complete</Button>
-                <Button style={{ margin: '1rem', width: '8rem' }} variant="outline-danger" onClick={handleShow}>Delete All</Button>
+                <Row>
+                    <Button style={{ margin: '1rem', width: '8rem' }} variant="outline-dark" onClick={() => changeDisplay('all')}>Show All</Button>
+                    <Button style={{ margin: '1rem', width: '8rem' }} variant="outline-info" onClick={() => changeDisplay('in progress')}>In Progress</Button>
+                    <Button style={{ margin: '1rem', width: '8rem' }} variant="outline-success" onClick={() => changeDisplay('complete')}>Complete</Button>
+                    <Button style={{ margin: '1rem', width: '8rem' }} variant="outline-danger" onClick={handleShow}>Delete All</Button>
+                </Row>
             </div>
             {/* Display all the demanded ToDo lists */}
             <div class="d-flex flex-column">
