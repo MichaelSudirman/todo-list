@@ -1,15 +1,21 @@
 import React, { useState } from 'react';
 
+// Bootstrap
+import Button from 'react-bootstrap/Button';
+
 const TodoFilter = props => {
+    // State for checking text
     const [state, setState] = useState({ filterText: '' })
 
-    const filterChange = (event) => {
+    // Alter the state onChange and return the value to parent
+    const changeFilter = (event) => {
         setState({
             [event.target.name]: event.target.value
         })
         props.onChange(event.target.value)
     }
 
+    // Reset filter when submitted
     const resetSubmit = event => {
         event.preventDefault()
         setState({ text: '' });
@@ -17,14 +23,15 @@ const TodoFilter = props => {
     }
 
     return (
-        <form>
+        <form class="d-flex m-1">
             <input
+                class="form-control"
                 name='text'
                 value={state.text}
-                onChange={filterChange}
+                onChange={changeFilter}
                 placeholder='filter...'
             />
-            <button onClick={resetSubmit}>Reset</button>
+            <Button style={{ width: '8rem' }} variant="secondary" onClick={resetSubmit}>Reset</Button>
         </form>
     )
 }

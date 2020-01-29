@@ -3,6 +3,11 @@ import TodoForm from './TodoForm';
 import TodoFilter from './TodoFilter';
 import Todo from './Todo';
 
+// Bootstrap
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Button from 'react-bootstrap/Button';
+import Container from 'react-bootstrap/Container';
+import Modal from 'react-bootstrap/Modal';
 /*
   TodoMVC
   1. add todo
@@ -17,18 +22,42 @@ import Todo from './Todo';
 */
 
 const TodoList = () => {
+    // State used for storing and manipulating ToDo
     const [state, setState] = useState({
         todos: [],
         display: "all",
         filter: ''
     });
-    const addTodo = (todo) => {
+
+    // State for Bootstrap Modal
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
+    // Adding and Deleteing Todo List
+    const addTodo = todo => {
         setState(state => ({
             ...state,
             todos: [todo, ...state.todos]
         }));
     }
+    const deleteTodo = id => {
+        setState({
+            ...state,
+            todos: state.todos.filter(todo => todo.id !== id)
+        })
+    }
+    // Delete all ToDo and alter Bootstrap Modal's state
+    const deleteAllTodo = () => {
+        setState({
+            todos: [],
+            display: 'all',
+            filter: ''
+        })
+        setShow(false)
+    }
 
+    // Altering complete state based on id
     const toggleComplete = id => {
         setState({
             ...state,
@@ -46,17 +75,16 @@ const TodoList = () => {
         })
     };
 
-    const deleteTodo = id => {
-        setState({
-            ...state,
-            todos: state.todos.filter(todo => todo.id !== id)
-        })
-    }
-
+    // Calculate number of ToDo with incomplete state
     const checkTodosLeft = todos => {
         return todos.filter(todo => !todo.complete).length
     }
 
+    /*
+        Re-render the display by swapping the state based on button clicked 
+        Display Todos will filter the display based on the state changed
+        changeFilter will also re-render and affect output of the display
+    */
     const changeDisplay = args => {
         if (args === 'all' || args === 'in progress' || args === 'complete') {
             setState({
@@ -65,7 +93,12 @@ const TodoList = () => {
             })
         }
     }
-
+    const changeFilter = data => {
+        setState({
+            ...state,
+            filter: data
+        })
+    }
     const displayTodos = () => {
         let newTodos;
         if (state.display === 'all') {
@@ -81,41 +114,47 @@ const TodoList = () => {
         return newTodos
     }
 
-    const filterChange = data => {
-        setState({
-            ...state,
-            filter: data
-        })
-    }
 
-    const deleteAllTodo = () => {
-        setState({
-            todos: [],
-            display: 'all',
-            filter: ''
-        })
-    }
+
 
     return (
-        <div>
-            <p>todo list</p>
+        <Container class="d-flex flex-row">
+            <h1>Todo List</h1>
+            {/* Inputs for adding and filtering ToDo lists */}
             <TodoForm onSubmit={addTodo} />
-            <TodoFilter onChange={filterChange} state={state} />
-            {displayTodos().map(todo =>
-                <Todo
-                    key={todo.id}
-                    toggleComplete={() => toggleComplete(todo.id)}
-                    deleteTodo={() => deleteTodo(todo.id)}
-                    todo={todo}
-                />
-            )}
-            <div>todos left: {checkTodosLeft(state.todos)}</div>
-            <button onClick={() => changeDisplay('all')}>All</button>
-            <button onClick={() => changeDisplay('in progress')}>In Progress</button>
-            <button onClick={() => changeDisplay('complete')}>Complete</button>
-            <button onClick={deleteAllTodo}>Delete All</button>
-        </div>
-        );
-    }
-    
-    export default TodoList;
+            <TodoFilter onChange={changeFilter} state={state} />
+            <h5>todos left: {checkTodosLeft(state.todos)}</h5>
+            {/* Button Features */}
+            <div class="d-flex justify-content-center ">
+                <Button style={{ margin: '1rem', width: '8rem' }} variant="outline-dark" onClick={() => changeDisplay('all')}>Show All</Button>
+                <Button style={{ margin: '1rem', width: '8rem' }} variant="outline-info" onClick={() => changeDisplay('in progress')}>In Progress</Button>
+                <Button style={{ margin: '1rem', width: '8rem' }} variant="outline-success" onClick={() => changeDisplay('complete')}>Complete</Button>
+                <Button style={{ margin: '1rem', width: '8rem' }} variant="outline-danger" onClick={handleShow}>Delete All</Button>
+            </div>
+            {/* Display all the demanded ToDo lists */}
+            <div class="d-flex flex-column">
+                {displayTodos().map(todo =>
+                    <Todo
+                        key={todo.id}
+                        toggleComplete={() => toggleComplete(todo.id)}
+                        deleteTodo={() => deleteTodo(todo.id)}
+                        todo={todo}
+                    />
+                )}
+            </div>
+            {/* Modal for delete all ToDo lists */}
+            <Modal show={show} onHide={handleClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Delete Confirmation</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Are you sure to delete all of your ToDo list?</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>Close</Button>
+                    <Button variant="danger" onClick={deleteAllTodo}>Delete</Button>
+                </Modal.Footer>
+            </Modal>
+        </Container>
+    );
+}
+
+export default TodoList;
